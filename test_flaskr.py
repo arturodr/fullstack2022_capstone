@@ -329,6 +329,23 @@ class TagsTestCase(unittest.TestCase):
                                    headers={'Authorization': "Bearer " + os.getenv('ADMIN_TOKEN')})
         self.assertEqual(res.status_code, 404)
 
+    """
+    get_qr is public
+    404 if qr_id doesn't exists
+    """
+
+    def test_get_qr(self):
+        res = self.client().get('/qr/ea290f48')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertTrue(data['tag'])
+
+    def test_get_qr_404(self):
+        res = self.client().get('/qr/11111111')
+        self.assertEqual(res.status_code, 404)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
