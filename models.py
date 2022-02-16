@@ -41,6 +41,10 @@ class User(db.Model):
         self.name = name
         self.telephone = telephone
 
+    @staticmethod
+    def total_users():
+        return db.session.query(User).count()
+
     def format(self):
         return {
             'id': self.id,
@@ -76,6 +80,10 @@ class Tag(db.Model):
         self.tag_id = str(uuid.uuid4())[:8]
         self.information = information
         self.user_id = user_id
+
+    @staticmethod
+    def total_tags():
+        return db.session.query(Tag).count()
 
     def format(self):
         return {
