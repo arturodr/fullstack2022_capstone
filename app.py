@@ -108,6 +108,8 @@ def create_app(test_config=None):
             abort(422)
 
         tag = Tag.query.get(tag_id)
+        if not tag:
+            abort(404)
 
         return jsonify(
             {
@@ -180,6 +182,8 @@ def create_app(test_config=None):
             abort(422)
 
         tag = Tag.query.filter(Tag.tag_id == tag_id).one_or_none()
+        if not tag:
+            abort(404)
 
         return jsonify(
             {
