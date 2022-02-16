@@ -71,3 +71,17 @@ class Tag(db.Model):
             'information': self.information,
             'user_id': self.user_id
         }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback(self)

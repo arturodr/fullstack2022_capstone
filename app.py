@@ -17,7 +17,7 @@ def create_app(test_config=None):
         page = request.args.get("page", 1, type=int)
         current_index = page - 1
 
-        users = User.query.order_by(User.id)\
+        users = User.query.order_by(User.id) \
             .limit(10) \
             .offset(current_index * 10).all()
 
@@ -63,6 +63,47 @@ def create_app(test_config=None):
                 "user": user.format()
             }
         )
+
+    @app.route('/tags', methods=['POST'])
+    def create_tag():
+        body = request.get_json()
+
+        name = body.get('name', None)
+        information = body.get('information', '')
+        user_id = body.get('user_id', None)
+
+        if name is None or user_id is None:
+            abort(422)
+
+        try:
+            tag = Tag(name=name,
+                      information=information,
+                      user_id=user_id)
+            tag.insert()
+
+            return jsonify({
+                'success': True,
+                'created': tag.tag_id
+            })
+
+        except Exception as e:
+            print(e)
+            tag.rollback()
+            abort(422)
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            'error': 404,
+            'message': 'Not Found'
+        }), 404
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            'error': 422,
+            'message': 'Unprocessable Entity'
+        }), 422
 
     return app
 
