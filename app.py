@@ -1,5 +1,7 @@
 import os
 from flask import Flask, abort, jsonify, request
+from psycopg2 import errors as dbe
+from sqlalchemy.exc import IntegrityError
 
 from models import setup_db, User, Tag
 from auth.auth import AuthError, requires_auth
@@ -86,7 +88,10 @@ def create_app(test_config=None):
         if not user:
             abort(404)
 
-        user.delete()
+        try:
+            user.delete()
+        except IntegrityError as e:
+            abort(422)
 
         return jsonify({
             "success": True,
