@@ -3,6 +3,9 @@
 This project constitutes the backend for the base of a system that helps identify objets or animals using QR codes. 
 an application could be ID of pets using a QR code, the user can have one or more pets and associated info, the code is printed on the pet tag, when the QR is read the pet and user info are displayed.
 
+The project backend is currently deployed at: [https://arturodr-capstone.herokuapp.com/](https://arturodr-capstone.herokuapp.com/)
+
+
 ## Getting Started
 
 ### Dependencies
