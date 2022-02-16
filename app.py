@@ -33,6 +33,31 @@ def create_app(test_config=None):
             }
         )
 
+    @app.route('/users', methods=['POST'])
+    def create_user():
+        body = request.get_json()
+
+        name = body.get('name', None)
+        telephone = body.get('telephone', None)
+
+        if name is None or telephone is None:
+            abort(422)
+
+        try:
+            user = User(name=name,
+                        telephone=telephone)
+            user.insert()
+
+            return jsonify({
+                'success': True,
+                'created': user.format()
+            })
+
+        except Exception as e:
+            print(e)
+            user.rollback()
+            abort(422)
+
     @app.route("/users/<int:user_id>", methods=['GET'])
     def get_user_by_id(user_id):
         if not user_id:
