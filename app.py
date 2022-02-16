@@ -174,6 +174,20 @@ def create_app(test_config=None):
             "delete": tag_id
         }), 200
 
+    @app.route("/qr/<int:tag_id>", methods=['GET'])
+    def get_qr_info(tag_id):
+        if not tag_id:
+            abort(422)
+
+        tag = Tag.query.filter(Tag.tag_id == tag_id).one_or_none()
+
+        return jsonify(
+            {
+                "success": True,
+                "user": tag.format()
+            }
+        )
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
