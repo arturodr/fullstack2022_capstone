@@ -87,3 +87,23 @@ There are two profiles configured, a user and an admin. Also, the qr endpoint is
   - can `delete:tags`
 - Manager
   - can perform all actions
+
+
+## Testing
+unit tests are included at `test_app.py`
+To run the tests, run
+```
+python test_app.py
+```
+![Unittests](unittests.png?raw=true)
+
+Also, Postman testing is provided at `udacity-capstone.postman_collection.json`
+you an import the collection and run the tests, keep in mind that the tokens must be valid for the tests to be successful.
+
+![Postman tests](Postman.png?raw=true)
+
+## Tokens
+If necessary, new tokens can be obtained using:
+```
+https://dev-2wna48f3.us.auth0.com/authorize?audience=udacity&response_type=token&client_id=7dtNGHUWJgsBBR4BrJBDiEc6VOghDc7a&redirect_uri=https://127.0.0.1:8080/login-result
+```
