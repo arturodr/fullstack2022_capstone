@@ -109,6 +109,19 @@ def create_app(test_config=None):
             "tag": tag.format()
         }), 200
 
+    @app.route("/tags/<int:tag_id>", methods=["DELETE"])
+    def delete_tag(tag_id):
+        tag = Tag.query.filter(Tag.id == tag_id).one_or_none()
+        if not tag:
+            abort(404)
+
+        tag.delete()
+
+        return jsonify({
+            "success": True,
+            "delete": tag_id
+        }), 200
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
