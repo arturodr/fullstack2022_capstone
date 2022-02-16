@@ -18,6 +18,7 @@ def create_app(test_config=None):
     @app.route("/users", methods=['GET'])
     @requires_auth("get:users")
     def get_users():
+        # Lists all the users
         page = request.args.get("page", 1, type=int)
         current_index = page - 1
 
@@ -40,6 +41,7 @@ def create_app(test_config=None):
     @app.route('/users', methods=['POST'])
     @requires_auth("post:users")
     def create_user():
+        # Creates a new user
         body = request.get_json()
 
         name = body.get('name', None)
@@ -66,6 +68,7 @@ def create_app(test_config=None):
     @app.route("/users/<int:user_id>", methods=['GET'])
     @requires_auth("get:users")
     def get_user_by_id(user_id):
+        # Gets a specific user
         if not user_id:
             abort(422)
 
@@ -84,6 +87,7 @@ def create_app(test_config=None):
     @app.route("/users/<int:user_id>", methods=["DELETE"])
     @requires_auth("delete:users")
     def delete_user(user_id):
+        # Deletes an user
         user = User.query.filter(User.id == user_id).one_or_none()
         if not user:
             abort(404)
@@ -101,6 +105,7 @@ def create_app(test_config=None):
     @app.route("/tags/<int:tag_id>", methods=['GET'])
     @requires_auth("get:tags")
     def get_tag(tag_id):
+        # Gets the tag information
         if not tag_id:
             abort(422)
 
@@ -118,6 +123,7 @@ def create_app(test_config=None):
     @app.route('/tags', methods=['POST'])
     @requires_auth("post:tags")
     def create_tag():
+        # Creates a new tag
         body = request.get_json()
 
         name = body.get('name', None)
@@ -146,6 +152,7 @@ def create_app(test_config=None):
     @app.route("/tags/<int:tag_id>", methods=["PATCH"])
     @requires_auth("patch:tags")
     def patch_tag(tag_id):
+        # Updates tag info
         data = request.get_json()
         tag = Tag.query.filter(Tag.id == tag_id).one_or_none()
         if not tag:
@@ -165,6 +172,7 @@ def create_app(test_config=None):
     @app.route("/tags/<int:tag_id>", methods=["DELETE"])
     @requires_auth("delete:tags")
     def delete_tag(tag_id):
+        # Deletes a tag
         tag = Tag.query.get(tag_id)
         if not tag:
             abort(404)
@@ -178,6 +186,7 @@ def create_app(test_config=None):
 
     @app.route("/qr/<string:tag_id>", methods=['GET'])
     def get_qr_info(tag_id):
+        # Gets the info from a QR
         if not tag_id:
             abort(422)
 

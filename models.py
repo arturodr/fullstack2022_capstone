@@ -26,7 +26,7 @@ def setup_db(app, database_path=database_path):
 
 '''
 User
-Have name and telephone
+Has name and telephone
 '''
 
 
@@ -64,6 +64,12 @@ class User(db.Model):
 
     def rollback(self):
         db.session.rollback(self)
+
+
+'''
+Tag
+Has name, a generated UUID, information and a related user
+'''
 
 
 class Tag(db.Model):
