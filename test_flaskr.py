@@ -250,8 +250,8 @@ class TagsTestCase(unittest.TestCase):
     """
 
     def test_patch_tag_by_admin(self):
-        response = self.client().patch('/tags',
-                                       json=self.test_tag,
+        response = self.client().patch('/tags/1',
+                                       json=self.test_patch_tag,
                                        headers={'Authorization': "Bearer " + os.getenv('ADMIN_TOKEN')})
         data = json.loads(response.data)
 
@@ -259,8 +259,8 @@ class TagsTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
     def test_patch_tag_by_user(self):
-        response = self.client().patch('/tags',
-                                       json=self.test_tag,
+        response = self.client().patch('/tags/1',
+                                       json=self.test_patch_tag,
                                        headers={'Authorization': "Bearer " + os.getenv('USER_TOKEN')})
         data = json.loads(response.data)
 
