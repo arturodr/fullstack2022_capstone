@@ -3,6 +3,7 @@ import unittest
 import json
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 from app import create_app
 from models import setup_db, User, Tag
@@ -335,7 +336,10 @@ class TagsTestCase(unittest.TestCase):
     """
 
     def test_get_qr(self):
-        res = self.client().get('/qr/ea290f48')
+
+        tag = Tag.query.order_by(func.random()).first()
+
+        res = self.client().get('/qr/'+tag.tag_id)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
