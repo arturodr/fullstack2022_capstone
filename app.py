@@ -88,20 +88,6 @@ def create_app(test_config=None):
             "delete": user_id
         }), 200
 
-    @app.route("/users/<int:user_id>", methods=['GET'])
-    def get_user(user_id):
-        if not user_id:
-            abort(422)
-
-        user = User.query.get(user_id)
-
-        return jsonify(
-            {
-                "success": True,
-                "user": user.format()
-            }
-        )
-
     @app.route("/tags/<int:tag_id>", methods=['GET'])
     def get_tag(tag_id):
         if not tag_id:
