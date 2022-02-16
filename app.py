@@ -75,7 +75,20 @@ def create_app(test_config=None):
             }
         )
 
-    @app.route("/tags/<int:user_id>", methods=['GET'])
+    @app.route("/users/<int:user_id>", methods=["DELETE"])
+    def delete_user(user_id):
+        user = User.query.filter(User.id == user_id).one_or_none()
+        if not user:
+            abort(404)
+
+        user.delete()
+
+        return jsonify({
+            "success": True,
+            "delete": user_id
+        }), 200
+
+    @app.route("/users/<int:user_id>", methods=['GET'])
     def get_user(user_id):
         if not user_id:
             abort(422)
