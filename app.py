@@ -2,6 +2,8 @@ import os
 from flask import Flask, abort, jsonify, request
 
 from models import setup_db, User, Tag
+from auth.auth import AuthError, requires_auth
+
 
 from flask_cors import CORS
 
@@ -13,6 +15,7 @@ def create_app(test_config=None):
     CORS(app)
 
     @app.route("/users", methods=['GET'])
+    @requires_auth("get:users")
     def get_users():
         page = request.args.get("page", 1, type=int)
         current_index = page - 1
@@ -34,6 +37,7 @@ def create_app(test_config=None):
         )
 
     @app.route('/users', methods=['POST'])
+    @requires_auth("post:users")
     def create_user():
         body = request.get_json()
 
@@ -59,6 +63,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route("/users/<int:user_id>", methods=['GET'])
+    @requires_auth("get:users")
     def get_user_by_id(user_id):
         if not user_id:
             abort(422)
@@ -76,6 +81,7 @@ def create_app(test_config=None):
         )
 
     @app.route("/users/<int:user_id>", methods=["DELETE"])
+    @requires_auth("delete:users")
     def delete_user(user_id):
         user = User.query.filter(User.id == user_id).one_or_none()
         if not user:
@@ -89,6 +95,7 @@ def create_app(test_config=None):
         }), 200
 
     @app.route("/tags/<int:tag_id>", methods=['GET'])
+    @requires_auth("get:tags")
     def get_tag(tag_id):
         if not tag_id:
             abort(422)
@@ -105,6 +112,7 @@ def create_app(test_config=None):
         )
 
     @app.route('/tags', methods=['POST'])
+    @requires_auth("post:tags")
     def create_tag():
         body = request.get_json()
 
@@ -132,6 +140,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route("/tags/<int:tag_id>", methods=["PATCH"])
+    @requires_auth("patch:tags")
     def patch_tag(tag_id):
         data = request.get_json()
         tag = Tag.query.filter(Tag.id == tag_id).one_or_none()
@@ -150,6 +159,7 @@ def create_app(test_config=None):
         }), 200
 
     @app.route("/tags/<int:tag_id>", methods=["DELETE"])
+    @requires_auth("delete:tags")
     def delete_tag(tag_id):
         tag = Tag.query.get(tag_id).one_or_none()
         if not tag:
