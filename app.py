@@ -102,6 +102,20 @@ def create_app(test_config=None):
             }
         )
 
+    @app.route("/tags/<int:tag_id>", methods=['GET'])
+    def get_tag(tag_id):
+        if not tag_id:
+            abort(422)
+
+        tag = Tag.query.get(tag_id)
+
+        return jsonify(
+            {
+                "success": True,
+                "user": tag.format()
+            }
+        )
+
     @app.route('/tags', methods=['POST'])
     def create_tag():
         body = request.get_json()
@@ -149,7 +163,7 @@ def create_app(test_config=None):
 
     @app.route("/tags/<int:tag_id>", methods=["DELETE"])
     def delete_tag(tag_id):
-        tag = Tag.query.filter(Tag.id == tag_id).one_or_none()
+        tag = Tag.query.get(tag_id).one_or_none()
         if not tag:
             abort(404)
 
