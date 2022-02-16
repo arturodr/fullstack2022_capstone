@@ -4,7 +4,6 @@ from flask import Flask, abort, jsonify, request
 from models import setup_db, User, Tag
 from auth.auth import AuthError, requires_auth
 
-
 from flask_cors import CORS
 
 
@@ -55,7 +54,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'created': user.format()
-            })
+            }), 201
 
         except Exception as e:
             print(e)
@@ -132,7 +131,7 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'created': tag.format()
-            })
+            }), 201
 
         except Exception as e:
             print(e)
