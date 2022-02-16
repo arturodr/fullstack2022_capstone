@@ -106,7 +106,7 @@ def create_app(test_config=None):
         return jsonify(
             {
                 "success": True,
-                "user": tag.format()
+                "tag": tag.format()
             }
         )
 
@@ -160,7 +160,7 @@ def create_app(test_config=None):
     @app.route("/tags/<int:tag_id>", methods=["DELETE"])
     @requires_auth("delete:tags")
     def delete_tag(tag_id):
-        tag = Tag.query.get(tag_id).one_or_none()
+        tag = Tag.query.get(tag_id)
         if not tag:
             abort(404)
 
@@ -183,7 +183,7 @@ def create_app(test_config=None):
         return jsonify(
             {
                 "success": True,
-                "user": tag.format()
+                "tag": tag.format()
             }
         )
 
