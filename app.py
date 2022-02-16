@@ -176,7 +176,7 @@ def create_app(test_config=None):
             "delete": tag_id
         }), 200
 
-    @app.route("/qr/<int:tag_id>", methods=['GET'])
+    @app.route("/qr/<string:tag_id>", methods=['GET'])
     def get_qr_info(tag_id):
         if not tag_id:
             abort(422)
