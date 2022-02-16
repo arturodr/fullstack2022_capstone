@@ -83,13 +83,31 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'created': tag.tag_id
+                'created': tag.format()
             })
 
         except Exception as e:
             print(e)
             tag.rollback()
             abort(422)
+
+    @app.route("/tags/<int:tag_id>", methods=["PATCH"])
+    def patch_tag(tag_id):
+        data = request.get_json()
+        tag = Tag.query.filter(Tag.id == tag_id).one_or_none()
+        if not tag:
+            abort(404)
+
+        tag.name = data.get("name", tag.name)
+        tag.information = data.get("information", tag.information)
+        tag.user_id = data.get("user_id", tag.user_id)
+
+        tag.update()
+
+        return jsonify({
+            "success": True,
+            "tag": tag.format()
+        }), 200
 
     @app.errorhandler(404)
     def not_found(error):
